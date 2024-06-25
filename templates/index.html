@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de Parámetros</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .hidden {
+            display: none;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .form {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        h2, h3 {
+            color: #007bff;
+        }
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <nav class="navbar navbar-light bg-light">
+            <h1><strong>Detección y clasificación automática de géneros musicales en canciones con formato digital.</strong></h1>
+        </nav>
+    </div>
+    
+    <div class="container">
+        <div class="form-group">
+            <h2>Seleccione el método de clasificación</h2>
+            <div class="custom-control custom-radio">
+                <input type="radio" name="metodo" id="svm_radio" value="svm" class="custom-control-input" checked>
+                <label class="custom-control-label" for="svm_radio">SVM</label>
+            </div>
+            <div class="custom-control custom-radio">
+                <input type="radio" name="metodo" id="cnn_radio" value="cnn" class="custom-control-input">
+                <label class="custom-control-label" for="cnn_radio">CNN</label>
+            </div>
+        </div>
+        
+        <div id="svm_form" class="form">
+            <form action="/procesar_svm" method="post">
+                <h3>Parámetros para SVM</h3>
+                
+                <div class="form-group">
+                    <label>Seleccione la base de datos</label>
+                    <select name="database" id="database_select_svm" class="form-control">
+                        <option value="gtzan">GTZAN</option>
+                        <option value="ballroom">Ballroom</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="kernel_svm">Kernel:</label>
+                    <select name="kernel_svm" id="kernel_svm" class="form-control">
+                        <option value="poly">Polinomial</option>
+                        <option value="linear">Lineal</option>
+                        <option value="rbf">RBF</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="C_svm">Valor de C:</label>
+                    <input type="number" name="C_svm" id="C_svm" value="3" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="coef0_svm">Coeficiente:</label>
+                    <input type="number" name="coef0_svm" id="coef0_svm" value="6" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Seleccione los géneros:</label><br>
+                    <div id="generos_svm_gtzan" class="generos_svm">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_svm[]" value="Rock" id="genero_rock" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_rock">Rock</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_svm[]" value="Jazz" id="genero_jazz" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_jazz">Jazz</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_svm[]" value="Classical" id="genero_classical" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_classical">Classical</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_svm[]" value="Blues" id="genero_blues" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_blues">Blues</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_svm[]" value="Country" id="genero_country" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_country">Country</label>
+                        </div>
+                    </div>
+                    <div id="generos_svm_ballroom" class="generos_svm hidden">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_svm[]" value="Waltz" id="genero_waltz" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_waltz">Waltz</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_svm[]" value="Quickstep" id="genero_quickstep" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_quickstep">Quickstep</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_svm[]" value="Jive" id="genero_jive" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_jive">Jive</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_svm[]" value="Samba" id="genero_samba" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_samba">Samba</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_svm[]" value="VienneseWaltz" id="genero_viennese_waltz" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_viennese_waltz">VienneseWaltz</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="num_entrenamiento_ini_svm">Número de archivos de entrenamiento inicial:</label>
+                    <input type="number" name="num_entrenamiento_ini_svm" id="num_entrenamiento_ini_svm" value="0" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="num_entrenamiento_fin_svm">Número de archivos de entrenamiento final:</label>
+                    <input type="number" name="num_entrenamiento_fin_svm" id="num_entrenamiento_fin_svm" value="50" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="num_prueba_ini_svm">Número de archivos de prueba inicial:</label>
+                    <input type="number" name="num_prueba_ini_svm" id="num_prueba_ini_svm" value="51" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="num_prueba_fin_svm">Número de archivos de prueba final:</label>
+                    <input type="number" name="num_prueba_fin_svm" id="num_prueba_fin_svm" value="99" class="form-control">
+                </div>
+                <input type="submit" value="Procesar con SVM" class="btn btn-primary" onclick="mostrarMensaje()">
+            </form>
+        </div>
+        
+        <div id="cnn_form" class="form hidden">
+            <form action="/procesar_cnn" method="post">
+                <h3>Parámetros para CNN</h3>
+                
+                <div class="form-group">
+                    <label>Seleccione la base de datos</l>
+                    <select name="database" id="database_select_cnn" class="form-control">
+                        <option value="ballroom">Ballroom</option>
+                        <option value="gtzan">GTZAN</option>
+                        
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lotes">Número de Lotes:</label>
+                    <input type="number" name="lotes" id="lotes" value="64" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="epocas">Número de épocas:</label>
+                    <input type="number" name="epocas" id="epocas" value="15" class="form-control">
+                </div>
+                <!-- <div class="form-group">
+                    <label for="learning_rate">Tasa de aprendizaje:</label>
+                    <input type="number" step="0.0001" name="learning_rate" id="learning_rate" value="0.001" class="form-control">
+                </div> -->
+                <div class="form-group">
+                    <label>Seleccione los géneros:</label><br>
+                    <div id="generos_cnn_gtzan" class="generos_cnn hidden">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_cnn[]" value="Rock" id="genero_rock_cnn" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_rock_cnn">Rock</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_cnn[]" value="Jazz" id="genero_jazz_cnn" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_jazz_cnn">Jazz</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_cnn[]" value="Classical" id="genero_classical_cnn" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_classical_cnn">Classical</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_cnn[]" value="Blues" id="genero_blues_cnn" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_blues_cnn">Blues</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_cnn[]" value="Country" id="genero_country_cnn" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_country_cnn">Country</label>
+                        </div>
+                    </div>
+                    <div id="generos_cnn_ballroom" class="generos_cnn ">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_cnn[]" value="Waltz" id="genero_waltz_cnn" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_waltz_cnn">Waltz</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_cnn[]" value="Quickstep" id="genero_quickstep_cnn" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_quickstep_cnn">Quickstep</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_cnn[]" value="Jive" id="genero_jive_cnn" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_jive_cnn">Jive</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_cnn[]" value="Samba" id="genero_samba_cnn" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_samba_cnn">Samba</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="genero_cnn[]" value="VienneseWaltz" id="genero_viennese_waltz_cnn" class="custom-control-input">
+                            <label class="custom-control-label" for="genero_viennese_waltz_cnn">VienneseWaltz</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="num_entrenamiento_ini_cnn">Número de archivos de entrenamiento inicial:</label>
+                    <input type="number" name="num_entrenamiento_ini_cnn" id="num_entrenamiento_ini_cnn" value="1" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="num_entrenamiento_fin_cnn">Número de archivos de entrenamiento final:</label>
+                    <input type="number" name="num_entrenamiento_fin_cnn" id="num_entrenamiento_fin_cnn" value="30" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="num_prueba_ini_cnn">Número de archivos de prueba inicial:</label>
+                    <input type="number" name="num_prueba_ini_cnn" id="num_prueba_ini_cnn" value="31" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="num_prueba_fin_cnn">Número de archivos de prueba final:</label>
+                    <input type="number" name="num_prueba_fin_cnn" id="num_prueba_fin_cnn" value="60" class="form-control">
+                </div>
+                <input type="submit" value="Procesar con CNN" class="btn btn-primary" onclick="mostrarMensaje()">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function mostrarMensaje() {
+            Swal.fire({
+                title: "Procesado",
+                text: "Por favor, espere un momento. Este proceso puede demorar un tiempo.",
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+        }
+        const databaseSelectSvm = document.getElementById('database_select_svm');
+        const databaseSelectCnn = document.getElementById('database_select_cnn');
+        const generosSvmGtzan = document.getElementById('generos_svm_gtzan');
+        const generosSvmBallroom = document.getElementById('generos_svm_ballroom');
+        const generosCnnGtzan = document.getElementById('generos_cnn_gtzan');
+        const generosCnnBallroom = document.getElementById('generos_cnn_ballroom');
+        const svmForm = document.getElementById('svm_form');
+        const cnnForm = document.getElementById('cnn_form');
+        const svmRadio = document.getElementById('svm_radio');
+        const cnnRadio = document.getElementById('cnn_radio');
+
+        // Mostrar el formulario de SVM por defecto
+        svmForm.classList.remove('hidden');
+
+        // Mostrar los géneros correspondientes a la base de datos seleccionada
+        databaseSelectSvm.addEventListener('change', () => {
+            if (databaseSelectSvm.value === 'gtzan') {
+                generosSvmGtzan.classList.remove('hidden');
+                generosSvmBallroom.classList.add('hidden');
+            } else if (databaseSelectSvm.value === 'ballroom') {
+                generosSvmGtzan.classList.add('hidden');
+                generosSvmBallroom.classList.remove('hidden');
+            }
+        });
+
+        databaseSelectCnn.addEventListener('change', () => {
+            if (databaseSelectCnn.value === 'gtzan') {
+                generosCnnGtzan.classList.remove('hidden');
+                generosCnnBallroom.classList.add('hidden');
+            } else if (databaseSelectCnn.value === 'ballroom') {
+                generosCnnGtzan.classList.add('hidden');
+                generosCnnBallroom.classList.remove('hidden');
+            }
+        });
+
+        // Evento de cambio de radio button
+        svmRadio.addEventListener('change', () => {
+            if (svmRadio.checked) {
+                svmForm.classList.remove('hidden');
+                cnnForm.classList.add('hidden');
+            }
+        });
+
+        cnnRadio.addEventListener('change', () => {
+            if (cnnRadio.checked) {
+                cnnForm.classList.remove('hidden');
+                svmForm.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
